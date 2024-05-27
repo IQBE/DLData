@@ -1,0 +1,6 @@
+**/.git
+**/.svn
+**/.hg
+
+# Ignore helm template files
+**/templates/**/*.yaml
