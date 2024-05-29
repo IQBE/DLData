@@ -1,0 +1,2 @@
+postgres:
+  replicas: 1
