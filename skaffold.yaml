@@ -3,11 +3,37 @@ kind: Config
 metadata:
   name: dldata-app
 
+build:
+  tagPolicy:
+    inputDigest: {}
+  local:
+    concurrency: 0
+  artifacts:
+    - image: api
+      context: api
+      docker:
+        dockerfile: docker/Dockerfile
+      sync:
+        infer:
+          - "*.py"
+          - "**/*.py"
+
 deploy:
   helm:
     releases:
       - name: dldata-app
         chartPath: dldata-app
+        namespace: default
         setValueTemplates:
+          api.image.repository: "{{.IMAGE_REPO_api}}"
+          api.image.tag: "{{.IMAGE_TAG_api}}"
+          api.replicas: 1
           postgres.replicas: 1
-          postgres.password: DLDataPass123
+          host: dldata.ilya.kapernikov.com
+
+portForward:
+  - resourceType: service
+    resourceName: api
+    port: 8000
+    localPort: 8000
+    namespace: default

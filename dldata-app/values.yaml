@@ -1,2 +1,10 @@
+api:
+  replicas: 1
+  image:
+    repository: registry.kube-public/api
+    tag: latest
+
 postgres:
   replicas: 1
+
+host: dldata.local
