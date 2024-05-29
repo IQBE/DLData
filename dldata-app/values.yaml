@@ -1,3 +1,2 @@
 postgres:
   replicas: 1
-  password: DLDataPass123
