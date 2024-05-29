@@ -8,8 +8,14 @@ To run this, we already need a kubernetes cluster with a docker registry, certif
 
 ## Deploy
 
+First make sure to build all the containers using
+
+```sh
+skaffold build -d <your.repository>
+```
+
 To start the application, simply deploy using
 
 ```sh
-skaffold run
+skaffold run -d <your.repository>
 ```
