@@ -5,7 +5,7 @@ metadata:
 
 build:
   tagPolicy:
-    inputDigest: {}
+    sha256: {}
   local:
     concurrency: 0
   artifacts:
@@ -17,18 +17,30 @@ build:
         infer:
           - "*.py"
           - "**/*.py"
+    - image: alembic
+      context: database
+      docker:
+        dockerfile: docker/Dockerfile
+      sync:
+        infer:
+          - "alembic/**/*"
+          - "alembic.ini"
 
 deploy:
   helm:
     releases:
       - name: dldata-app
-        chartPath: dldata-app
         namespace: default
+        chartPath: dldata-app
+        valuesFiles:
+          - dldata-app/values.yaml
         setValueTemplates:
           api.image.repository: "{{.IMAGE_REPO_api}}"
-          api.image.tag: "{{.IMAGE_TAG_api}}"
+          api.image.tag: "{{.IMAGE_TAG_api}}@{{.IMAGE_DIGEST_api}}"
           api.replicas: 1
           postgres.replicas: 1
+          alembic.image.repository: "{{.IMAGE_REPO_alembic}}"
+          alembic.image.tag: "{{.IMAGE_TAG_alembic}}@{{.IMAGE_DIGEST_alembic}}"
           host: dldata.ilya.kapernikov.com
 
 portForward:

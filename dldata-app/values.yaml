@@ -7,4 +7,9 @@ api:
 postgres:
   replicas: 1
 
+alembic:
+  image:
+    repository: registry.kube-public/alembic
+    tag: latest
+
 host: dldata.local
