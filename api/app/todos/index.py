@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from random import randint
 
 router = APIRouter()
 
@@ -11,16 +10,13 @@ class Todo(BaseModel):
 
 @router.get("/")
 async def read_todos():
-    return [
-        {"todo_id": 0,"title": "Todo 1", "description": "This is a description of Todo 1"},
-        {"todo_id": 1,"title": "Todo 2", "description": "This is a description of Todo 2"}
-    ]
+    return 0 # Return all todos
 
 @router.get("/{todo_id}")
 async def read_todo(todo_id: int):
-    return {"todo": f"Todo {todo_id}"}
+    return 0 # Return the todo
 
 @router.post("/")
 async def create_todo(todo: Todo):
-    todo.todo_id = randint(0, 1000)
-    return {"new_todo": todo}
+    # Add the todo to the database
+    return 0 # Return the todo_id

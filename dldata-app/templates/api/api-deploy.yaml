@@ -19,3 +19,29 @@ spec:
       containers:
         - name: api
           image: "{{ .Values.api.image.repository }}:{{ default .Chart.AppVersion .Values.api.image.tag }}"
+          env:
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: dldata-app-postgres-pguser-dldata-app-postgres
+                  key: user
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dldata-app-postgres-pguser-dldata-app-postgres
+                  key: password
+            - name: DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: dldata-app-postgres-pguser-dldata-app-postgres
+                  key: dbname
+            - name: DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: dldata-app-postgres-pguser-dldata-app-postgres
+                  key: host
+            - name: DATABASE_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: dldata-app-postgres-pguser-dldata-app-postgres
+                  key: port
