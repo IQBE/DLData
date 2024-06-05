@@ -35,12 +35,10 @@ deploy:
         valuesFiles:
           - dldata-app/values.yaml
         setValueTemplates:
-          api.image.repository: "{{.IMAGE_REPO_api}}"
-          api.image.tag: "{{.IMAGE_TAG_api}}@{{.IMAGE_DIGEST_api}}"
+          api.image: "{{.IMAGE_FULLY_QUALIFIED_api}}"
           api.replicas: 1
           postgres.replicas: 1
-          alembic.image.repository: "{{.IMAGE_REPO_alembic}}"
-          alembic.image.tag: "{{.IMAGE_TAG_alembic}}@{{.IMAGE_DIGEST_alembic}}"
+          alembic.image: "{{.IMAGE_FULLY_QUALIFIED_alembic}}"
           host: dldata.ilya.kapernikov.com
 
 portForward:

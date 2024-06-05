@@ -1,7 +1,8 @@
 import os
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-class Engine:
+class Session:
     def __init__(self):
         dbhost = os.getenv("DATABASE_HOST", "unknown_host")
         dbuser = os.getenv("DATABASE_USER", "unknown_user")
@@ -11,7 +12,8 @@ class Engine:
 
         sqlalchemy_url = f"postgresql+psycopg://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{dbname}"
 
-        self.engine = create_engine(sqlalchemy_url)
+        engine = create_engine(sqlalchemy_url)
+        self.session = sessionmaker(bind=engine)
 
-    def get_engine(self):
-        return self.engine
+    def get_session(self):
+        return self.session

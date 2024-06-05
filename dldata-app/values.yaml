@@ -1,15 +1,11 @@
 api:
   replicas: 1
-  image:
-    repository: registry.kube-public/api
-    tag: latest
+  image: registry.kube-public/api:latest
 
 postgres:
   replicas: 1
 
 alembic:
-  image:
-    repository: registry.kube-public/alembic
-    tag: latest
+  image: registry.kube-public/alembic:latest
 
 host: dldata.local
