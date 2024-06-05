@@ -1,114 +1,56 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
-from sqlalchemy import text
-from datetime import datetime
+from fastapi import APIRouter, Depends
+from typing import List
 
 from app.bdconnection import Session
+from app.models.todo import TodoModel, TodoOrm, TodoCreate
 
 router = APIRouter()
 
-SessionLocal = Session().get_session()
+def get_db():
+    SessionLocal = Session().get_session()
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-class Todo(BaseModel):
-    todo_id: int = None
-    title: str
-    description: str
-    created_at: datetime = None
-    updated_at: datetime = None
-    completed: bool = False
+@router.get("/", response_model=List[TodoModel])
+async def read_todos(ses: Session = Depends(get_db)):
+    query = ses.query(TodoOrm)
+    todos = query.filter(TodoOrm.completed == False).all()
+    return todos
 
-@router.get("/")
-async def read_todos():
-    results = []
+@router.get("/all", response_model=List[TodoModel])
+async def read_todos(ses: Session = Depends(get_db)):
+    query = ses.query(TodoOrm)
+    todos = query.all()
+    return todos
 
-    with SessionLocal() as ses:
-        res = ses.execute(text("SELECT * FROM todos WHERE completed = false"))
-        for row in res:
-            results.append([x for x in row])
+@router.get("/{todo_id}", response_model=TodoModel)
+async def read_todo(todo_id: int, ses: Session = Depends(get_db)):
+    query = ses.query(TodoOrm)
+    todo = query.filter(TodoOrm.todo_id == todo_id).first()
+    return todo
 
-    return results
+@router.put("/complete/{todo_id}", response_model=TodoModel)
+async def mark_completed(todo_id: int, ses: Session = Depends(get_db)):
+    query = ses.query(TodoOrm)
+    todo = query.filter(TodoOrm.todo_id == todo_id).first()
+    todo.completed = True
+    ses.commit()
+    return todo
 
-@router.get("/all")
-async def read_todos():
-    results = []
+@router.post("/", response_model=TodoModel)
+async def create_todo(todo: TodoCreate, ses: Session = Depends(get_db)):
+    new_todo = TodoOrm(**todo.dict())
+    ses.add(new_todo)
+    ses.commit()
+    return new_todo
 
-    with SessionLocal() as ses:
-        res = ses.execute(text("SELECT * from todos"))
-        for row in res:
-            results.append([x for x in row])
-
-    return results
-
-@router.get("/{todo_id}")
-async def read_todo(todo_id: int):
-    results = []
-
-    with SessionLocal() as ses:
-        res = ses.execute(text(f"SELECT * from todos WHERE todo_id = {todo_id}"))
-        for row in res:
-            results.append([x for x in row])
-
-    return results
-
-@router.put("/complete/{todo_id}")
-async def mark_completed(todo_id: int):
-    with SessionLocal() as ses:
-        res = ses.execute(text(f"UPDATE todos SET completed = true WHERE todo_id = {todo_id} RETURNING *"))
-        row = res.fetchone()
-
-        if not row:
-            return "Failed to mark todo as completed"
-
-        todoResp = Todo(
-            todo_id=row[0],
-            title=row[1],
-            description=row[2],
-            created_at=row[3],
-            updated_at=row[4],
-            completed=row[5]
-        )
-
-        ses.commit()
-    return todoResp
-
-@router.post("/")
-async def create_todo(todo: Todo):
-    with SessionLocal() as ses:
-        res = ses.execute(text(f"INSERT INTO todos (title, description) VALUES ('{todo.title}', '{todo.description}') RETURNING *"))
-        row = res.fetchone()
-
-        if not row:
-            return "Failed to create todo"
-
-        todoResp = Todo(
-            todo_id=row[0],
-            title=row[1],
-            description=row[2],
-            created_at=row[3],
-            updated_at=row[4],
-            completed=row[5]
-        )
-
-        ses.commit()
-    return todoResp
-
-@router.delete("/{todo_id}")
-async def delete_todo(todo_id: int):
-    with SessionLocal() as ses:
-        res = ses.execute(text(f"DELETE FROM todos WHERE todo_id = {todo_id} RETURNING *"))
-        row = res.fetchone()
-
-        if not row:
-            return "Failed to delete todo"
-
-        todoResp = Todo(
-            todo_id=row[0],
-            title=row[1],
-            description=row[2],
-            created_at=row[3],
-            updated_at=row[4],
-            completed=row[5]
-        )
-
-        ses.commit()
-    return todoResp
+@router.delete("/{todo_id}", response_model=TodoModel)
+async def delete_todo(todo_id: int, ses: Session = Depends(get_db)):
+    query = ses.query(TodoOrm)
+    todo = query.filter(TodoOrm.todo_id == todo_id).first()
+    ses.delete(todo)
+    ses.commit()
+    return todo
