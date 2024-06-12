@@ -1,0 +1,24 @@
+{
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE},target=/localuser/me,type=bind,consistency=cached"
+  ],
+  "forwardPorts": [5432],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dchanco.vsc-invoke",
+        "ms-python.python",
+        "ms-python.pylint",
+        "ms-python.isort",
+        "ms-toolsai.jupyter"
+      ],
+      "settings": {
+        "window.title": "DLData ${dirty}${activeEditorShort}${separator}${appName}"
+      }
+    }
+  }
+}
