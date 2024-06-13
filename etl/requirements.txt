@@ -1,5 +1,2 @@
 pandas
 python-dotenv
-alembic
-jupyter
-ipykernel

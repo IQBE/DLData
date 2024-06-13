@@ -14,7 +14,10 @@
         "ms-python.python",
         "ms-python.pylint",
         "ms-python.isort",
-        "ms-toolsai.jupyter"
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker",
+        "redhat.vscode-yaml",
+        "ms-kubernetes-tools.vscode-kubernetes-tools"
       ],
       "settings": {
         "window.title": "DLData ${dirty}${activeEditorShort}${separator}${appName}"
