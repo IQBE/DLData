@@ -11,7 +11,7 @@ services:
     environment:
       DATABASE_NAME: dldata
       DATABASE_USER: dldata
-      DATABASE_PWD: dldatapass
+      DATABASE_PASSWORD: dldatapass
       DATABASE_HOST: db
       DATABASE_PORT: 5432
       IS_DEVCONTAINER: "true"
