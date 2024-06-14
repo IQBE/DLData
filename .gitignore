@@ -1,2 +1,4 @@
-database/alembic-env
 **/__pycache__
+**/*-env
+**/.env
+notebooks/gtfs_transit.zip
