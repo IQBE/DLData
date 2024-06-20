@@ -27,13 +27,15 @@ database_config = {
 }
 
 
-unknown_keys = [key for key in database_config if database_config[key].startswith('unknown')]
+unknown_keys = [
+    key for key in database_config if database_config[key].startswith('unknown')]
 if len(unknown_keys) > 0:
-    print(f"ERROR: Unknown environment variables: {', '.join(x for x in unknown_keys)}.")
+    print(f'ERROR: Unknown environment variables: {
+          ', '.join(x for x in unknown_keys)}.')
     exit()
 
-sqlalchemy_url = f"postgresql+psycopg://{database_config['user']}:{database_config['password']}@{
-    database_config['host']}:{database_config['port']}/{database_config['name']}"
+sqlalchemy_url = f'postgresql+psycopg://{database_config['user']}:{database_config['password']}@{
+    database_config['host']}:{database_config['port']}/{database_config['name']}'
 
 headers = {
     'Ocp-Apim-Subscription-Key': skey,
@@ -86,6 +88,7 @@ def flatten_data(tu):
             result['timestamp'] = datetime.fromtimestamp(u['timestamp'])
     return result
 
+
 print('Transforming data...', end='')
 datalist = [flatten_data(tu) for tu in data['entity']]
 tripsdf = pd.DataFrame(datalist)
@@ -102,7 +105,7 @@ print('Writing data to database:')
 engine = create_engine(sqlalchemy_url)
 Session = sessionmaker(bind=engine)
 
-print("- Writing to temp database...", end='')
+print('- Writing to temp database...', end='')
 tripsdf.to_sql('temp_table', con=engine,
                if_exists='replace', index=False)
 print('DONE!')
@@ -117,10 +120,10 @@ SET departure_delay = EXCLUDED.departure_delay,
     timestamp = EXCLUDED.timestamp;
 '''
 with Session() as session:
-    print("- Upserting data...", end='')
+    print('- Upserting data...', end='')
     session.execute(text(upsert_query))
     print('DONE!')
-    print("- Deleting temp table...", end='')
+    print('- Deleting temp table...', end='')
     session.execute(text('DROP TABLE temp_table'))
     session.commit()
     print('DONE!')
@@ -130,4 +133,4 @@ print('Data successfully written to database!')
 with engine.connect() as connection:
     res = connection.execute(text('SELECT COUNT(*) FROM vehicle_updates'))
     count = res.scalar()
-    print(f"Table 'vehicle_updates' now contains {count} rows.")
+    print(f'Table \'vehicle_updates\' now contains {count} rows.')
