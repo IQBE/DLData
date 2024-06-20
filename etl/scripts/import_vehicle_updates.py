@@ -30,12 +30,10 @@ database_config = {
 unknown_keys = [
     key for key in database_config if database_config[key].startswith('unknown')]
 if len(unknown_keys) > 0:
-    print(f'ERROR: Unknown environment variables: {
-          ', '.join(x for x in unknown_keys)}.')
+    print(f'ERROR: Unknown environment variables: {", ".join(x for x in unknown_keys)}.')
     exit()
 
-sqlalchemy_url = f'postgresql+psycopg://{database_config['user']}:{database_config['password']}@{
-    database_config['host']}:{database_config['port']}/{database_config['name']}'
+sqlalchemy_url = f'postgresql+psycopg://{database_config["user"]}:{database_config["password"]}@{database_config["host"]}:{database_config["port"]}/{database_config["name"]}'
 
 headers = {
     'Ocp-Apim-Subscription-Key': skey,
@@ -133,4 +131,4 @@ print('Data successfully written to database!')
 with engine.connect() as connection:
     res = connection.execute(text('SELECT COUNT(*) FROM vehicle_updates'))
     count = res.scalar()
-    print(f'Table \'vehicle_updates\' now contains {count} rows.')
+    print(f'Table "vehicle_updates" now contains {count} rows.')
