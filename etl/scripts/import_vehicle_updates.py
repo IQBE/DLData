@@ -106,9 +106,14 @@ print('Writing data to database:')
 engine = create_engine(sqlalchemy_url)
 Session = sessionmaker(bind=engine)
 
+print('- Creating temp table...', end='')
+with Session() as session:
+    session.execute(text('CREATE TEMP TABLE temp_table (LIKE vehicle_updates INCLUDING ALL)'))
+    session.commit()
+print('DONE!')
+
 print('- Writing to temp database...', end='')
-tripsdf.to_sql('temp_table', con=engine,
-               if_exists='replace', index=False)
+tripsdf.to_sql('temp_table', con=engine, if_exists='append', index=False)
 print('DONE!')
 
 upsert_query = '''
