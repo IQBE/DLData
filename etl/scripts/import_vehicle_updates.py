@@ -1,3 +1,5 @@
+# Stop editor from formatting on save
+# fmt: off
 '''
     Import the real-time data from the De Lijn API and store it in a database.
 '''
@@ -33,7 +35,7 @@ if len(unknown_keys) > 0:
     print(f'ERROR: Unknown environment variables: {", ".join(x for x in unknown_keys)}.')
     exit()
 
-sqlalchemy_url = f'postgresql+psycopg://{database_config["user"]}:{database_config["password"]}@{database_config["host"]}:{database_config["port"]}/{database_config["name"]}'
+sqlalchemy_url = f'postgresql://{database_config["user"]}:{database_config["password"]}@{database_config["host"]}:{database_config["port"]}/{database_config["name"]}'
 
 headers = {
     'Ocp-Apim-Subscription-Key': skey,
