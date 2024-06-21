@@ -26,6 +26,7 @@ database_config = {
     'password': os.getenv('DATABASE_PASSWORD', 'unknown_password'),
     'host': os.getenv('DATABASE_HOST', 'unknown_host'),
     'port': os.getenv('DATABASE_PORT', 'unknown_port'),
+    'adapter': os.getenv('DATABASE_ADAPTER', 'postgresql'),
 }
 
 
@@ -35,7 +36,7 @@ if len(unknown_keys) > 0:
     print(f'ERROR: Unknown environment variables: {", ".join(x for x in unknown_keys)}.')
     exit(1)
 
-sqlalchemy_url = f'postgresql://{database_config["user"]}:{database_config["password"]}@{database_config["host"]}:{database_config["port"]}/{database_config["name"]}'
+sqlalchemy_url = f'{database_config["adapter"]}://{database_config["user"]}:{database_config["password"]}@{database_config["host"]}:{database_config["port"]}/{database_config["name"]}'
 
 headers = {
     'Ocp-Apim-Subscription-Key': skey,
