@@ -14,7 +14,8 @@ from dataclasses import dataclass, asdict
 import requests
 import pandas as pd
 from dotenv import load_dotenv
-from sqlalchemy import create_engine, text, Engine
+from sqlalchemy import create_engine, text
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
 
 
@@ -166,7 +167,7 @@ def get_skey() -> str:
 
     return skey
 
-def get_databse_config() -> DatabaseConfig:
+def get_database_config() -> DatabaseConfig:
     '''
     Get the database configuration from the environment variables.
     '''
@@ -187,7 +188,7 @@ def get_databse_config() -> DatabaseConfig:
 
 if __name__ == '__main__':
     skey = get_skey()
-    database_config = get_databse_config()
+    database_config = get_database_config()
     engine = get_engine(database_config)
 
     data = get_trip_data(skey)
