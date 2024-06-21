@@ -33,7 +33,7 @@ unknown_keys = [
     key for key in database_config if database_config[key].startswith('unknown')]
 if len(unknown_keys) > 0:
     print(f'ERROR: Unknown environment variables: {", ".join(x for x in unknown_keys)}.')
-    exit()
+    exit(1)
 
 sqlalchemy_url = f'postgresql://{database_config["user"]}:{database_config["password"]}@{database_config["host"]}:{database_config["port"]}/{database_config["name"]}'
 
@@ -60,11 +60,11 @@ if response.status_code == 200:
     except Exception as e:
         print('An error occurred:', e)
         print('Response:', response.text)
-        exit()
+        exit(1)
 else:
     print('Failed to retrieve data! Status code:', response.status_code)
     print('Response:', response.text)
-    exit()
+    exit(1)
 
 
 def flatten_data(tu):
@@ -134,3 +134,6 @@ with engine.connect() as connection:
     res = connection.execute(text('SELECT COUNT(*) FROM vehicle_updates'))
     count = res.scalar()
     print(f'Table "vehicle_updates" now contains {count} rows.')
+    connection.close()
+
+exit(0)
