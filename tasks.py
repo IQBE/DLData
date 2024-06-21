@@ -4,7 +4,7 @@ from invoke import task
 @task
 def start_api(c):
     """Start the API server"""
-    c.run("cd api && uvicorn app.main:app --host 0.0.0.0 --port 8000")
+    c.run("cd api && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload")
 
 
 @task
