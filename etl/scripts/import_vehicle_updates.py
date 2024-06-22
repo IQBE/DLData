@@ -61,8 +61,8 @@ def _parse_data(tu: Dict) -> TripEntry:
 def _retrieve_data(api_url: str, headers, params) -> Dict:
     response = requests.get(api_url, headers=headers, params=params)
     if response.status_code == 200:
-        data = response.json()
-        return data
+        response.raise_for_status()
+        return response.json()
     else:
         print('Failed to retrieve data! Status code:', response.status_code)
         print('Response:', response.text)
