@@ -35,12 +35,12 @@ class DatabaseConfig:
     '''
     Dataclass to store the database configuration.
     '''
-    name: Optional[str] = 'unknown_name'
-    user: Optional[str] = 'unknown_user'
-    password: Optional[str] = 'unknown_password'
-    host: Optional[str] = 'unknown_host'
-    port: Optional[str] = 'unknown_port'
-    adapter: Optional[str] = 'postgresql'
+    name: str = 'unknown_name'
+    user: str = 'unknown_user'
+    password: str = 'unknown_password'
+    host: str = 'unknown_host'
+    port: str = 'unknown_port'
+    adapter: str = 'postgresql'
 
 
 def _parse_data(tu: Dict) -> TripEntry:
