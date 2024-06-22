@@ -172,15 +172,15 @@ def get_database_config() -> DatabaseConfig:
     Get the database configuration from the environment variables.
     '''
     database_config = DatabaseConfig(
-        name=os.getenv('DATABASE_NAME'),
-        user=os.getenv('DATABASE_USER'),
-        password=os.getenv('DATABASE_PASSWORD'),
-        host=os.getenv('DATABASE_HOST'),
-        port=os.getenv('DATABASE_PORT'),
-        adapter=os.getenv('DATABASE_ADAPTER'),
+        name=os.getenv('DATABASE_NAME', 'unknown_name'),
+        user=os.getenv('DATABASE_USER', 'unknown_user'),
+        password=os.getenv('DATABASE_PASSWORD', 'unknown_password'),
+        host=os.getenv('DATABASE_HOST', 'unknown_host'),
+        port=os.getenv('DATABASE_PORT', 'unknown_port'),
+        adapter=os.getenv('DATABASE_ADAPTER', 'postgresql'),
     )
 
-    unknown_keys = [key for key in asdict(database_config).values() if key is not None and key.startswith('unknown')]
+    unknown_keys = [key for key in asdict(database_config).values() if key.startswith('unknown')]
     if len(unknown_keys) > 0:
         raise Exception(f'ERROR: Unknown environment variables: {", ".join(x for x in unknown_keys)}.')
 
