@@ -180,7 +180,7 @@ def get_database_config() -> DatabaseConfig:
         adapter=os.getenv('DATABASE_ADAPTER'),
     )
 
-    unknown_keys = [key for key in asdict(database_config).values() if key.startswith('unknown')]
+    unknown_keys = [key for key in asdict(database_config).values() if key is not None and key.startswith('unknown')]
     if len(unknown_keys) > 0:
         raise Exception(f'ERROR: Unknown environment variables: {", ".join(x for x in unknown_keys)}.')
 
