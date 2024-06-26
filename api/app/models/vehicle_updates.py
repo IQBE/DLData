@@ -36,3 +36,14 @@ class VehicleUpdateFromVarOrm(Base):
     departure_stop_id = Column(String, nullable=True)
     vehicle = Column(String, nullable=False)
     timestamp = Column(DateTime, nullable=False)
+
+
+class VehicleUpdateFromVarDelay1hOrm(Base):
+    __tablename__ = 'vehicle_from_var_delay_1h'
+    __table_args__ = {'schema': 'dbt_schema'}
+
+    trip_id = Column(String, nullable=False, primary_key=True)
+    departure_delay = Column(Integer, nullable=True)
+    departure_stop_id = Column(String, nullable=True)
+    vehicle = Column(String, nullable=False)
+    timestamp = Column(DateTime, nullable=False)
