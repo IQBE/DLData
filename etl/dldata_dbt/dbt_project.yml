@@ -32,3 +32,6 @@ models:
     vehicle_updates:
       +materialized: view
 
+vars:
+  vehicle_id: 7253
+
