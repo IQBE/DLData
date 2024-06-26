@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: public
+    schema: public
+    tables:
+      - name: vehicle_updates
+        columns:
+          - name: trip_id
+            data_tests:
+              - not_null
+              - unique
+          - name: departure_delay
+          - name: departure_stop_id
+          - name: vehicle
+          - name: timestamp
