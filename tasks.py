@@ -23,3 +23,15 @@ def reset_database(c):
 def update_data(c):
     """Update the data"""
     c.run("python3 etl/scripts/import_vehicle_updates.py")
+
+
+@task
+def run_dbt(c):
+    """Run dbt"""
+    c.run("cd etl/dldata_dbt && dbt run")
+
+
+@task
+def clean_dbt(c):
+    """Clean dbt"""
+    c.run("cd etl/dldata_dbt && dbt clean")
