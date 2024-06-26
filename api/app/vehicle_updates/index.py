@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from typing import List
 
 from app.bdconnection import Session
-from app.models.vehicle_updates import VehicleUpdateModel, VehicleUpdateOrm
+from app.models.vehicle_updates import VehicleUpdateModel, VehicleUpdateOrm, VehicleUpdateFromVarOrm
 from app.models.avg_delay import AvgDelayModel, AvgDelayORM
 from app.models.vehicles_most_trips import VehiclesMostTripsModel, VehiclesMostTripsORM
 from app.models.trip_updates_last_24h import TripUpdatesLast24hModel, TripUpdatesLast24hORM
@@ -22,6 +22,13 @@ def get_db():
 @router.get("/", response_model=List[VehicleUpdateModel])
 async def get_vehicle_updates(ses: Session = Depends(get_db)):
     query = ses.query(VehicleUpdateOrm)
+    vu = query.all()
+    return vu
+
+
+@router.get("/fromvar", response_model=List[VehicleUpdateModel])
+async def get_vehicle_from_dbt_var(ses: Session = Depends(get_db)):
+    query = ses.query(VehicleUpdateFromVarOrm)
     vu = query.all()
     return vu
 

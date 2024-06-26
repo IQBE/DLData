@@ -25,3 +25,14 @@ class VehicleUpdateModel(BaseModel):
     departure_stop_id: str | None
     vehicle: str
     timestamp: datetime
+
+
+class VehicleUpdateFromVarOrm(Base):
+    __tablename__ = 'vehicle_from_var'
+    __table_args__ = {'schema': 'dbt_schema'}
+
+    trip_id = Column(String, nullable=False, primary_key=True)
+    departure_delay = Column(Integer, nullable=True)
+    departure_stop_id = Column(String, nullable=True)
+    vehicle = Column(String, nullable=False)
+    timestamp = Column(DateTime, nullable=False)
