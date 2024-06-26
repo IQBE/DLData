@@ -35,3 +35,9 @@ def run_dbt(c):
 def clean_dbt(c):
     """Clean dbt"""
     c.run("cd etl/dldata_dbt && dbt clean")
+
+
+@task
+def test_dbt(c):
+    """Test dbt"""
+    c.run("cd etl/dldata_dbt && dbt test")

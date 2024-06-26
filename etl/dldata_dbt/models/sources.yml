@@ -7,7 +7,7 @@ sources:
       - name: vehicle_updates
         columns:
           - name: trip_id
-            tests:
+            data_tests:
               - not_null
               - unique
           - name: departure_delay
