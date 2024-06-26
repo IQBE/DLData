@@ -5,6 +5,7 @@ from app.bdconnection import Session
 from app.models.vehicle_updates import VehicleUpdateModel, VehicleUpdateOrm
 from app.models.avg_delay import AvgDelayModel, AvgDelayORM
 from app.models.vehicles_most_trips import VehiclesMostTripsModel, VehiclesMostTripsORM
+from app.models.trip_updates_last_24h import TripUpdatesLast24hModel, TripUpdatesLast24hORM
 
 router = APIRouter()
 
@@ -52,4 +53,11 @@ async def get_avg_delay_per_day(ses: Session = Depends(get_db)):
 async def get_all_vehicles_ordered_by_most_trips(limit: int = 100, ses: Session = Depends(get_db)):
     query = ses.query(VehiclesMostTripsORM)
     vu = query.limit(limit).all()
+    return vu
+
+
+@router.get("/trip_updates_last_24h/", response_model=TripUpdatesLast24hModel)
+async def get_trip_updates_last_24h(ses: Session = Depends(get_db)):
+    query = ses.query(TripUpdatesLast24hORM)
+    vu = query.first()
     return vu
