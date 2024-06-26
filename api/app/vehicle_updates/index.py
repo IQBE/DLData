@@ -3,6 +3,7 @@ from typing import List
 
 from app.bdconnection import Session
 from app.models.vehicle_updates import VehicleUpdateModel, VehicleUpdateOrm
+from app.models.avg_delay import AvgDelayModel, AvgDelayORM
 
 router = APIRouter()
 
@@ -23,7 +24,7 @@ async def get_vehicle_updates(ses: Session = Depends(get_db)):
     return vu
 
 
-@router.get("/{trip_id}", response_model=VehicleUpdateModel)
+@router.get("/trips/{trip_id}", response_model=VehicleUpdateModel)
 async def get_vehicle_update(trip_id: str, ses: Session = Depends(get_db)):
     query = ses.query(VehicleUpdateOrm).filter(
         VehicleUpdateOrm.trip_id == trip_id)
@@ -35,5 +36,12 @@ async def get_vehicle_update(trip_id: str, ses: Session = Depends(get_db)):
 async def get_vehicle_updates_by_vehicle(vehicle: str, ses: Session = Depends(get_db)):
     query = ses.query(VehicleUpdateOrm).filter(
         VehicleUpdateOrm.vehicle == vehicle)
+    vu = query.all()
+    return vu
+
+
+@router.get("/avg_delay", response_model=List[AvgDelayModel])
+async def get_avg_delay_per_day(ses: Session = Depends(get_db)):
+    query = ses.query(AvgDelayORM)
     vu = query.all()
     return vu
